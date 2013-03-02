@@ -11,7 +11,6 @@
 #define NEXT_IMAGE_LINK "/m/fingerpori/"
 #define PREVIOUS_IMAGE_LINK "/m/fingerpori/"
 #define IMAGELINK "snstatic.fi/webkuva/sarjis/560/"
-//#define PAGELINK "http://www.hs.fi/fingerpori/"
 #define PAGELINK "http://www.hs.fi/m/fingerpori/"
 
 ImageLoader::ImageLoader()
@@ -59,14 +58,14 @@ void ImageLoader::downloadImage(QString address)
 {
     qDebug() << "downloadImage " << address;
     QUrl url(address);
- nManager->get(QNetworkRequest(url));
+    nManager->get(QNetworkRequest(url));
     ;
 }
 void ImageLoader::downloadHtmlData(QString address)
 {
     qDebug() << "downloadHtmlData " << address;
     QUrl url(address);
- nManagerhtml->get(QNetworkRequest(url));
+    nManagerhtml->get(QNetworkRequest(url));
 }
 
 void ImageLoader::download_finished(QNetworkReply* reply)
@@ -76,7 +75,6 @@ void ImageLoader::download_finished(QNetworkReply* reply)
     if (reply->error() == QNetworkReply::NoError)
      {
      // read data from QNetworkReply here
-
      bytes = reply->readAll();
      qDebug() << "download_finished bytes " <<  bytes.count();
 
@@ -84,11 +82,6 @@ void ImageLoader::download_finished(QNetworkReply* reply)
      if(kuva.loadFromData(bytes,"",Qt::AutoColor)==true)
          qDebug("load ok");
      else {qDebug("load nok");return;}
-     //kuva.scaledToHeight(271);
-    // kuva.scaled(640,271,Qt::AspectRatioMode,Qt::FastTransformation);
-    //if(currentpixmap) {scene->removeItem(currentpixmap);}
-    //currentpixmap = scene->addPixmap(kuva->scaled(ui->graphicsView->size().width(),ui->graphicsView->size().height(),Qt::IgnoreAspectRatio,Qt::FastTransformation));
-
 
     imagelist.append(kuva);
     if(imagelist.count()==1) emit first_image_received();
@@ -115,7 +108,6 @@ void ImageLoader::downloadhtml_finished(QNetworkReply *reply)
    {
    // read data from QNetworkReply here
 
-   //QByteArray bytes = reply->readAll();
    QString htmldata = reply->readAll();
    qDebug() << "download_finished bytes " <<  htmldata.size();
 
@@ -145,4 +137,3 @@ void ImageLoader::downloadhtml_finished(QNetworkReply *reply)
   qDebug() << previousimage << " " << currentimage << " " << nextimage;
   downloadImage(currentimage_prefix.append(IMAGELINK).append(currentimage));
 }
-

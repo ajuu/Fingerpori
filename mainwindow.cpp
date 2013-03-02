@@ -14,18 +14,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene = new QGraphicsScene;
     ui->graphicsView->setScene(scene);
-ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //scene->setSceneRect(-20,0,640,380-20);
-currentpixmap=NULL;
-imgloader = new ImageLoader();
-connect(imgloader,SIGNAL(first_image_received()),this,SLOT(show_first_image()));
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    currentpixmap=NULL;
+    imgloader = new ImageLoader();
+    connect(imgloader,SIGNAL(first_image_received()),this,SLOT(show_first_image()));
 
 
-anim = new QTimeLine(500,this);
-anim->setCurveShape(QTimeLine::EaseOutCurve);
-connect(anim,SIGNAL(frameChanged(int)),this,SLOT(timeline_change(int)));
-connect(anim,SIGNAL(finished()),this,SLOT(timeline_finished()));
+    anim = new QTimeLine(500,this);
+    anim->setCurveShape(QTimeLine::EaseOutCurve);
+    connect(anim,SIGNAL(frameChanged(int)),this,SLOT(timeline_change(int)));
+    connect(anim,SIGNAL(finished()),this,SLOT(timeline_finished()));
 }
 
 MainWindow::~MainWindow()
@@ -96,10 +95,7 @@ void MainWindow::on_pushButton_previous_clicked()
 
     kuva = imgloader->getPreviousImage();
 
-   //if(currentpixmap) {scene->removeItem(currentpixmap);}
-
-   qDebug() << "on_pushButton_previous_clicked addpixmap";
-    //scene->clear();
+    qDebug() << "on_pushButton_previous_clicked addpixmap";
     nextpixmap = scene->addPixmap(kuva.scaled(ui->graphicsView->size().width(),ui->graphicsView->size().height(),Qt::IgnoreAspectRatio,Qt::FastTransformation));
     nextpixmap->setPos(-640,0);
     anim->stop();
@@ -110,7 +106,6 @@ void MainWindow::on_pushButton_previous_clicked()
 void MainWindow::timeline_change(int value)
 {
     nextpixmap->setPos(value,0);
-    //qDebug() << "timeline_change" << value;
 }
 void MainWindow::timeline_finished()
 {
@@ -126,16 +121,11 @@ void MainWindow::on_pushButton_next_clicked()
     kuva = imgloader->getNextImage();// return;
     qDebug() << "on_pushButton_next_clicked addpixmap";
 
-//   scene->clear();
     nextpixmap = scene->addPixmap(kuva.scaled(ui->graphicsView->size().width(),ui->graphicsView->size().height(),Qt::IgnoreAspectRatio,Qt::FastTransformation));
     nextpixmap->setPos(640,0);
     anim->stop();
     anim->setFrameRange(640,0);
     anim->start();
-    //    kuvaitem->setPos(-50,0);
-    //qDebug() <<  "nof items" << scene->items().count();
-//    currentpixmap->setPixmap(kuva.scaled(ui->graphicsView->size().width(),ui->graphicsView->size().height(),Qt::IgnoreAspectRatio,Qt::FastTransformation));
-
 }
 
 void MainWindow::on_pushButton_exit_clicked()
